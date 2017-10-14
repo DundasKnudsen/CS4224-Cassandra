@@ -1,11 +1,10 @@
-import script.data as data
+import sys
 
 
 def main():
-    a = 1
-    b = 2
-    print data.add(a, b)
-    print data.subtract(a, b)
+    a = int(sys.argv[1])
+    b = int(sys.argv[2])
+    print a + b
 
 
 if __name__ == "__main__":

@@ -105,3 +105,9 @@ venv.bak/
 
 # visual studio code workspace settings
 .vscode/
+
+# data
+.DS_Store
+4224-project-files.zip
+data/
+log/
