@@ -71,7 +71,7 @@ CREATE MATERIALIZED VIEW customer_top_balance AS
     WITH CLUSTERING ORDER BY (c_balance DESC);
 
 
-CREATE TABLE order (
+CREATE TABLE order_table (
     o_w_id int,
     o_d_id int,
     o_id int,
@@ -94,7 +94,7 @@ CREATE TABLE item (
 
 CREATE MATERIALIZED VIEW order_by_customer AS
     SELECT o_w_id, o_d_id, o_id, o_c_id, o_entry_d, o_carrier_id
-    FROM order
+    FROM order_table
     WHERE o_w_id IS NOT NULL AND o_d_id IS NOT NULL AND o_id IS NOT NULL AND o_c_id IS NOT NULL
     PRIMARY KEY ((o_w_id, o_d_id), o_c_id, o_id)
     WITH CLUSTERING ORDER BY (o_c_id ASC, o_id DESC);
