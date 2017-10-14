@@ -1,6 +1,4 @@
-DROP KEYSPACE IF EXISTS wholesaler;
-
-CREATE KEYSPACE wholesaler WITH replication = {
+CREATE KEYSPACE IF NOT EXISTS wholesaler WITH replication = {
   'class': 'SimpleStrategy',
   'replication_factor': '3'
 };
@@ -9,6 +7,7 @@ DESC KEYSPACE wholesaler;
 
 USE wholesaler;
 
+DROP TABLE IF EXISTS warehouse;
 CREATE TABLE warehouse (
     w_id int,
     w_name text,
@@ -22,6 +21,7 @@ CREATE TABLE warehouse (
     PRIMARY KEY (w_id)
 );
 
+DROP TABLE IF EXISTS district;
 CREATE TABLE district (
     d_w_id int,
     d_id int,
@@ -38,6 +38,7 @@ CREATE TABLE district (
     PRIMARY KEY ((d_w_id, d_id))
 );
 
+DROP TABLE IF EXISTS customer;
 CREATE TABLE customer (
     c_w_id int,
     c_d_id int,
@@ -63,6 +64,8 @@ CREATE TABLE customer (
     PRIMARY KEY ((c_w_id, c_d_id), c_id)
 );
 
+
+DROP MATERIALIZED VIEW IF EXISTS customer_top_balance;
 CREATE MATERIALIZED VIEW customer_top_balance AS
     SELECT c_d_id, c_w_id, c_id, c_balance, c_first, c_middle, c_last
     FROM customer
@@ -70,7 +73,7 @@ CREATE MATERIALIZED VIEW customer_top_balance AS
     PRIMARY KEY (c_w_id, c_balance, c_d_id, c_id)
     WITH CLUSTERING ORDER BY (c_balance DESC);
 
-
+DROP TABLE IF EXISTS order_table;
 CREATE TABLE order_table (
     o_w_id int,
     o_d_id int,
@@ -83,6 +86,8 @@ CREATE TABLE order_table (
     PRIMARY KEY ((o_w_id, o_d_id), o_id)
 );
 
+
+DROP TABLE IF EXISTS item;
 CREATE TABLE item (
     i_id int,
     i_name text,
@@ -92,6 +97,7 @@ CREATE TABLE item (
     PRIMARY KEY (i_id)
 );
 
+DROP MATERIALIZED VIEW IF EXISTS order_by_customer;
 CREATE MATERIALIZED VIEW order_by_customer AS
     SELECT o_w_id, o_d_id, o_id, o_c_id, o_entry_d, o_carrier_id
     FROM order_table
@@ -99,6 +105,7 @@ CREATE MATERIALIZED VIEW order_by_customer AS
     PRIMARY KEY ((o_w_id, o_d_id), o_c_id, o_id)
     WITH CLUSTERING ORDER BY (o_c_id ASC, o_id DESC);
 
+DROP TABLE IF EXISTS order_line;
 CREATE TABLE order_line (
     ol_w_id int,
     ol_d_id int,
@@ -114,6 +121,7 @@ CREATE TABLE order_line (
     PRIMARY KEY ((ol_w_id, ol_d_id), ol_o_id, ol_quantity, ol_number)
 ) WITH CLUSTERING ORDER BY (ol_o_id DESC, ol_quantity DESC);
 
+DROP TABLE IF EXISTS stock;
 CREATE TABLE stock (
     s_w_id int,
     s_i_id int,
