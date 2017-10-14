@@ -64,7 +64,7 @@ CREATE TABLE customer (
 );
 
 CREATE MATERIALIZED VIEW customer_top_balance AS
-    SELECT c_d_id, c_w_id, c_id, c_balance, c_first, c_middle, c_last, c_w_name, c_d_name
+    SELECT c_d_id, c_w_id, c_id, c_balance, c_first, c_middle, c_last
     FROM customer
     WHERE c_d_id IS NOT NULL AND c_w_id IS NOT NULL AND c_id IS NOT NULL AND c_balance IS NOT NULL
     PRIMARY KEY (c_w_id, c_balance, c_d_id, c_id)

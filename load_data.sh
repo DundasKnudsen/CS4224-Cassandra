@@ -27,6 +27,6 @@ join -a 1 -j 1 -t ',' -o 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.1
 
 echo "---------------------Start import csv files into db"
 # load data
-python ./script/data.py $1
+python ./script/data.py $1 > log/load_data.txt
 
 echo "---------------------Done."
