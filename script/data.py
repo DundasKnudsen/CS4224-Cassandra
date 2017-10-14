@@ -50,7 +50,7 @@ def main():
 
     print "Importing order..."
     session.execute(
-        "COPY wholesaler.order FROM '{0}/order.csv' WITH DELIMITER=','".format(data_dir))
+        "COPY wholesaler.order_table FROM '{0}/order.csv' WITH DELIMITER=','".format(data_dir))
 
     print "Importing order-line..."
     session.execute(
