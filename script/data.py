@@ -36,34 +36,6 @@ def main():
 
     session.execute("USE wholesaler")
 
-    print "Importing warehouse..."
-    session.execute(
-        "COPY wholesaler.warehouse FROM '{0}/warehouse.csv' WITH DELIMITER=','".format(data_dir))
-
-    print "Importing district..."
-    session.execute(
-        "COPY wholesaler.district FROM '{0}/district.csv' WITH DELIMITER=','".format(data_dir))
-
-    print "Importing customer..."
-    session.execute(
-        "COPY wholesaler.customer FROM '{0}/customer.csv' WITH DELIMITER=','".format(data_dir))
-
-    print "Importing order..."
-    session.execute(
-        "COPY wholesaler.order_table FROM '{0}/order.csv' WITH DELIMITER=','".format(data_dir))
-
-    print "Importing order-line..."
-    session.execute(
-        "COPY wholesaler.order_line FROM '{0}/tmp-order-line.csv' WITH DELIMITER=','".format(data_dir))
-
-    print "Importing item..."
-    session.execute(
-        "COPY wholesaler.item FROM '{0}/item.csv' WITH DELIMITER=','".format(data_dir))
-
-    print "Importing stock..."
-    session.execute(
-        "COPY wholesaler.stock FROM '{0}/tmp-stock.csv' WITH DELIMITER=','".format(data_dir))
-
     print "Loading.. data of order to prepare for d_next_o_id_to_deliver value of district..."
     next_o_id_map = load_order_data(data_dir)
 
