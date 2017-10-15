@@ -14,7 +14,10 @@ def load_order_data(data_dir):
         for line in reader:
             _id = line[0] + "-" + line[1]
             if line[4] == "":
-                data[_id] += 1
+                if _id in data:
+                    data[_id] += 1
+                else:
+                    data[_id] = 1
     return data
 
 
