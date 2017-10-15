@@ -84,7 +84,7 @@ CREATE TABLE order_table (
     o_all_local decimal,
     o_entry_d timestamp,
     PRIMARY KEY ((o_w_id, o_d_id), o_id)
-);
+) WITH CLUSTERING ORDER BY (o_id DESC);
 
 
 DROP TABLE IF EXISTS item;
