@@ -23,21 +23,21 @@ def update_order(session, w_id, d_id, o_id, carrier_id):
 
 def update_order_lines_and_get_total_order_amount(session, w_id, d_id, o_id):
     prepared = session.prepare(
-        "SELECT ol_number, ol_quantity, ol_amount FROM order_line WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ?")
+        "SELECT ol_number, ol_amount FROM order_line WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ?")
     rows = list(session.execute(prepared.bind(
         (int(w_id), int(d_id), int(o_id)))))
 
     total_amount = 0
 
     for ol in rows:
-        ol_number, ol_quantity, ol_amount = ol
+        ol_number, ol_amount = ol
         if ol_amount is not None:
             total_amount += int(ol_amount)
 
         prepared = session.prepare(
-            "UPDATE order_line SET ol_delivery_d = ? WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ?")
+            "UPDATE order_line SET ol_delivery_d = ? WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ? AND ol_number = ?")
         session.execute(prepared.bind(
-            (str(datetime.now()), int(w_id), int(d_id), int(o_id))))
+            (str(datetime.now()), int(w_id), int(d_id), int(o_id), int(ol_number))))
 
     return total_amount
 
@@ -76,4 +76,4 @@ def delivery_xact(session, w_id, carrier_id):
         total_amount = update_order_lines_and_get_total_order_amount(
             session, w_id, d_id, o_id)
         update_customer(session, w_id, d_id, o_id, total_amount)
-    return 'DONE! No output for this transaction!'
+    return 'Finish delivery!'
