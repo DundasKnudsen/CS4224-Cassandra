@@ -38,6 +38,7 @@ CREATE TABLE district (
     PRIMARY KEY ((d_w_id, d_id))
 );
 
+DROP MATERIALIZED VIEW IF EXISTS customer_top_balance;
 DROP TABLE IF EXISTS customer;
 CREATE TABLE customer (
     c_w_id int,
@@ -64,8 +65,6 @@ CREATE TABLE customer (
     PRIMARY KEY ((c_w_id, c_d_id), c_id)
 );
 
-
-DROP MATERIALIZED VIEW IF EXISTS customer_top_balance;
 CREATE MATERIALIZED VIEW customer_top_balance AS
     SELECT c_d_id, c_w_id, c_id, c_balance, c_first, c_middle, c_last
     FROM customer
@@ -73,6 +72,7 @@ CREATE MATERIALIZED VIEW customer_top_balance AS
     PRIMARY KEY (c_w_id, c_balance, c_d_id, c_id)
     WITH CLUSTERING ORDER BY (c_balance DESC);
 
+DROP MATERIALIZED VIEW IF EXISTS order_by_customer;
 DROP TABLE IF EXISTS order_table;
 CREATE TABLE order_table (
     o_w_id int,
@@ -97,7 +97,6 @@ CREATE TABLE item (
     PRIMARY KEY (i_id)
 );
 
-DROP MATERIALIZED VIEW IF EXISTS order_by_customer;
 CREATE MATERIALIZED VIEW order_by_customer AS
     SELECT o_w_id, o_d_id, o_id, o_c_id, o_entry_d, o_carrier_id
     FROM order_table
