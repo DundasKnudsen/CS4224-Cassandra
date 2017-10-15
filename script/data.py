@@ -22,11 +22,11 @@ def load_order_data(data_dir):
 
 
 def fix_district(next_o_id_map, session):
-    rows = session.execute("SELCT * FROM district")
+    rows = session.execute("SELECT * FROM district")
     for row in rows:
-        _id = row[0] + "-" + row[1]
+        _id = str(row[0]) + "-" + str(row[1])
         session.execute(
-            "UPDATE warehouse \
+            "UPDATE district \
             SET d_next_o_id_to_deliver={0} \
             WHERE d_w_id={1} AND d_id={2} \
         ".format(next_o_id_map[_id], row[0], row[1]))
