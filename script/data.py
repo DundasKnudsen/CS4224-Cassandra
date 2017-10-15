@@ -9,7 +9,7 @@ from cassandra.cluster import Cluster
 
 def load_order_data(data_dir):
     data = {}
-    with open("{0}/order.csv") as csv_file:
+    with open("{0}/order.csv".format(data_dir)) as csv_file:
         reader = csv.reader(csv_file, delimiter=",")
         for line in reader:
             _id = line[0] + "-" + line[1]
