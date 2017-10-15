@@ -17,7 +17,7 @@ KEYSPACE_NAME = "testing"
 
 
 def main():
-    cluster = Cluster()
+    cluster = Cluster(control_connection_timeout=None)
     session = cluster.connect()
 
     rows = session.execute("SELECT keyspace_name FROM system_schema.keyspaces")
