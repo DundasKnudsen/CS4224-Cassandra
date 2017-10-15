@@ -29,7 +29,7 @@ def fix_district(next_o_id_map, session):
             "UPDATE district \
             SET d_next_o_id_to_deliver={0} \
             WHERE d_w_id={1} AND d_id={2} \
-        ".format(next_o_id_map[_id], row[0], row[1]))
+        ".format(next_o_id_map[_id] + 1, row[0], row[1]))
 
 
 def main():

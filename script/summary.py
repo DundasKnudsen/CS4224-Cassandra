@@ -2,8 +2,7 @@ import sys
 
 
 def main():
-    for filename in sys.argv[1:]:
-        print "---", filename
+    stat_file_dir = sys.argv[1]
 
 
 if __name__ == "__main__":

@@ -18,13 +18,13 @@ for i in $(seq 1 $num_clients)
 do
     if [ $((i%5)) == $node_id ]
     then
-        python ./script/main.py xact_dir/$i.txt $i &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
+        python ./script/main.py xact_dir/$i.txt $i $log_dir/$num_clients-$consistency_level-stats.txt &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
     fi
 done
 
 wait
 
-python ./script/summary.py $log_dir/$num_clients-$consistency_level/*.txt > $log_dir/$num_clients-$consistency_level/summary.txt
+python ./script/summary.py $log_dir/$num_clients-$consistency_level-stats.txt > $log_dir/$num_clients-$consistency_level-summary.txt
 
 echo "done on node $node_id with num_clients $num_clients and consistency_level $consistency_level"
 
