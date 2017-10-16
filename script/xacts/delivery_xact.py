@@ -34,7 +34,7 @@ def update_order_lines_and_get_total_order_amount(session, w_id, d_id, o_id):
         prepared = session.prepare(
             "UPDATE order_line SET ol_delivery_d = ? WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ? AND ol_number = ?")
         session.execute(prepared.bind(
-            (str(datetime.now()), w_id, d_id, int(o_id), int(ol_number))))
+            (datetime.now(), w_id, d_id, int(o_id), int(ol_number))))
 
     return total_amount
 

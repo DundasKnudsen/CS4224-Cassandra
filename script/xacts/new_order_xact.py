@@ -48,9 +48,9 @@ def create_order(session, w_id, d_id, c_id, o_id, num_of_items, order_lines):
     prepared = session.prepare(
         "INSERT INTO order_table \
         (o_id, o_d_id, o_w_id, o_c_id, o_entry_d, o_ol_cnt, o_all_local) \
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        VALUES (?, ?, ?, ?, ?, ?, ?)")
     session.execute(prepared.bind((int(o_id), d_id, w_id,
-                                   int(c_id), str(o_entry_d), int(num_of_items), all_local)))
+                                   int(c_id), o_entry_d, int(num_of_items), all_local)))
 
     order = {
         'o_id': o_id,
