@@ -15,7 +15,7 @@ def get_and_update_next_o_id_to_deliver(session, w_id, d_id):
 
 def update_order(session, w_id, d_id, o_id, carrier_id):
     prepared = session.prepare(
-        "UPDATE order_table SET o_carrier_id = ? WHERE o_w_id = ? AND o_d_id = ? AND o_id")
+        "UPDATE order_table SET o_carrier_id = ? WHERE o_w_id = ? AND o_d_id = ? AND o_id = ?")
     session.execute(prepared.bind((int(carrier_id), w_id, d_id, o_id)))
 
 
