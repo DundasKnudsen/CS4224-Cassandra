@@ -21,7 +21,7 @@ def get_warehouse_name(session, w_id):
 
 
 def customer_compare(c1, c2):
-    return c2.c_balance - c1.c_balance
+    return int(c2.c_balance - c1.c_balance)
 
 
 def top_balance(session):
