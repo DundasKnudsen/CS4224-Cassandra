@@ -8,9 +8,10 @@ def get_top_balance_customers(session, d_id, limit):
     return list(rows)
 
 
-def get_district_name(session, d_id):
-    prepared = session.prepare("SELECT d_name FROM district WHERE d_id = ?")
-    rows = session.execute(prepared.bind([int(d_id)]))
+def get_district_name(session, w_id, d_id):
+    prepared = session.prepare(
+        "SELECT d_name FROM district WHERE d_w_id = ? AND d_id = ?")
+    rows = session.execute(prepared.bind([int(w_id), int(d_id)]))
     return None if not rows else rows[0].d_name
 
 
@@ -39,7 +40,7 @@ def top_balance(session):
             'c_last': customer.c_last,
             'c_balance': customer.c_balance,
             'w_name': get_warehouse_name(session, customer.c_w_id),
-            'd_name': get_district_name(session, customer.c_d_id)
+            'd_name': get_district_name(session, customer.c_w_id, customer.c_d_id)
         }
         result.append(data)
     return result
