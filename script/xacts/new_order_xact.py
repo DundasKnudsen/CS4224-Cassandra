@@ -12,8 +12,7 @@ def get_and_update_district(session, w_id, d_id):
     prepared = session.prepare(
         "UPDATE district SET d_next_o_id WHERE d_w_id = ? AND d_id = ?"
     )
-    session.execute(prepared.bind(
-        (int(district.d_next_o_id + 1), w_id, d_id)))
+    session.execute(prepared.bind((int(district.d_next_o_id + 1), w_id, d_id)))
     return district
 
 
@@ -50,8 +49,8 @@ def create_order(session, w_id, d_id, c_id, o_id, num_of_items, order_lines):
         "INSERT INTO order_table \
         (o_id, o_d_id, o_w_id, o_c_id, o_entry_d, o_ol_cnt, o_all_local) \
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-    session.execute(prepared.bind((int(o_id), d_id, w_id, int(
-        c_id), str(o_entry_d), int(num_of_items), all_local)))
+    session.execute(prepared.bind((int(o_id), d_id, w_id,
+                                   int(c_id), str(o_entry_d), int(num_of_items), all_local)))
 
     order = {
         'o_id': o_id,
@@ -99,10 +98,11 @@ def update_order_line_and_stock(session, w_id, d_id, o_id, order_lines):
             prepared = session.prepare(
                 "INSERT INTO order_line \
                 (ol_o_id, ol_d_id, ol_w_id, ol_number, ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_dist_info) \
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             )
-            session.execute(prepared.bind((int(o_id), d_id, w_id, item_index, int(
-                i_id), int(supply_w_id), int(quantity), item_amount, "S_DIST_{0}".format(d_id))))
+            session.execute(prepared.bind((int(o_id), d_id, w_id, item_index,
+                                           int(i_id), int(supply_w_id),
+                                           int(quantity), item_amount, "S_DIST_{0}".format(d_id))))
 
             added_items.append({
                 'i_id': i_id,

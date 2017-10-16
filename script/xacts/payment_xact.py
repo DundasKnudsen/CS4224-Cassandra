@@ -4,7 +4,7 @@ from decimal import *
 def update_warehouse(session, w_id, payment):
     prepared = session.prepare(
         "SELECT w_ytd, w_street_1, w_street_2, w_city, w_state, w_zip FROM warehouse WHERE w_id = ?")
-    rows = session.execute(prepared.bind(w_id))
+    rows = session.execute(prepared.bind((w_id)))
 
     if not rows:
         return None
@@ -36,10 +36,11 @@ def update_district(session, w_id, d_id, payment):
 
 def update_customer(session, w_id, d_id, c_id, payment):
     prepared = session.prepare(
-        """SELECT c_first, c_middle, c_last, c_street_1, c_street_2, c_city, c_state, c_zip,
-                c_phone, c_since, c_credit, c_credit_limit, c_discount, c_balance, c_ytd_payment,
-                c_payment_cnt FROM customer WHERE c_w_id = ? AND c_d_id = ? AND c_id = ?""")
-    rows = session.execute(prepared.bind(w_id, d_id, c_id))
+        "SELECT c_first, c_middle, c_last, c_street_1, c_street_2, c_city, c_state, c_zip, \
+        c_phone, c_since, c_credit, c_credit_limit, c_discount, c_balance, c_ytd_payment, \
+        c_payment_cnt FROM customer WHERE c_w_id = ? AND c_d_id = ? AND c_id = ?"
+    )
+    rows = session.execute(prepared.bind((w_id, d_id, c_id)))
 
     if not rows:
         return None

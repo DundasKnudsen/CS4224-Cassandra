@@ -1,11 +1,10 @@
 def get_orders(session, w_id, d_id, order_limit):
-    prepared_stmt = session.prepare(
+    prepared = session.prepare(
         "SELECT o_id, o_entry_d, o_c_id FROM order_table \
         WHERE o_w_id = ? AND o_d_id = ? \
         LIMIT ?"
     )
-    bound_stmt = prepared_stmt.bind([w_id, d_id, int(order_limit)])
-    return list(session.execute(bound_stmt))
+    return list(session.execute(prepared.bind([w_id, d_id, int(order_limit)])))
 
 
 def get_most_popular_items(session, w_id, d_id, o_id):
