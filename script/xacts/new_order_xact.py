@@ -10,7 +10,7 @@ def get_and_update_district(session, w_id, d_id):
         return None
     district = rows[0]
     prepared = session.prepare(
-        "UPDATE district SET d_next_o_id WHERE d_w_id = ? AND d_id = ?"
+        "UPDATE district SET d_next_o_id = ? WHERE d_w_id = ? AND d_id = ?"
     )
     session.execute(prepared.bind((int(district.d_next_o_id + 1), w_id, d_id)))
     return district
