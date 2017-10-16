@@ -57,7 +57,6 @@ def update_customer(session, w_id, d_id, c_id, payment):
     session.execute(prepared.bind((updated_c_balance, updated_c_ytd_payment,
                                    updated_c_payment_cnt, w_id, d_id, c_id)))
 
-    data.c_balance = updated_c_balance
     return data
 
 
