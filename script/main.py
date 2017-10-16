@@ -48,7 +48,7 @@ def run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir):
 
             elif values[0] == 'P':
                 result = payment_xact(session, int(values[1]),
-                                      int(values[2]), int(values[3]), int(values[4]))
+                                      int(values[2]), int(values[3]), values[4])
             elif values[0] == 'D':
                 result = delivery_xact(session, int(values[1]), int(values[2]))
             elif values[0] == 'O':
@@ -64,6 +64,7 @@ def run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir):
                 result = top_balance(session)
             else:
                 transactions_count -= 1
+                continue
 
             sys.stderr.write(
                 "\n Transaction: {0}\n {1}\n".format(line, result))
