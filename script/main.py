@@ -29,7 +29,7 @@ def run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir):
 
         for (i, line) in enumerate(lines):
             values = line.replace('\n', '').split(',')
-
+            transactions_count += 1
             result = None
 
             if values[0] == 'N':
