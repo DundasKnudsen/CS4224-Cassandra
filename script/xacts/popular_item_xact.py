@@ -75,10 +75,10 @@ def popular_item_xact(session, w_id, d_id, last_order_count):
         })
 
     items_percentage = []
-    for item in set_item:
+    for item_id in set_item:
         items_percentage.append({
-            'name': item['name'],
-            'percentage': float(item['count']) / order_count
+            'name': map_item[item_id]['name'],
+            'percentage': float(map_item[item_id]['count']) / order_count
         })
 
     result = {
