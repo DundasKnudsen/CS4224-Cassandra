@@ -67,7 +67,7 @@ def run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir):
                 continue
 
             sys.stderr.write(
-                "\n Transaction: {0}\n {1}\n".format(line, result))
+                "\n Transaction: {0}\n {1}\n".format(line, str(result)))
 
     end_time = time.time()
     elapsed_time = end_time - start_time
