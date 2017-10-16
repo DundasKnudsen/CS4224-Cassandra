@@ -21,6 +21,7 @@ def write_summary(file_dir, transactions_count, elapsed_time, throughput):
 
 
 def run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir):
+    session.execute("USE wholesaler")
     transactions_count = 0
     with open(xact_file_dir) as xact_file:
         lines = xact_file.readlines()

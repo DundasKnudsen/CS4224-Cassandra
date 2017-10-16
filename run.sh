@@ -21,8 +21,8 @@ do
     if [ $((i%5)) == $node_id ]
     then
         log_file=$log_dir/$num_clients-$consistency_level-stats.txt
-        touch log_file
-        python ./script/main.py xact_dir/$i.txt $i $consistency_level $log_file &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
+        touch $log_file
+        python ./script/main.py $xact_dir/$i.txt $i $consistency_level $log_file &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
     fi
 done
 
