@@ -46,8 +46,8 @@ def update_customer(session, w_id, d_id, c_id, payment):
         return None
 
     data = rows[0]
-    updated_c_balance = data.c_balance - Decimal(payment)
-    updated_c_ytd_payment = data.c_ytd_payment + Decimal(payment)
+    updated_c_balance = Decimal(data.c_balance) - Decimal(payment)
+    updated_c_ytd_payment = Decimal(data.c_ytd_payment) + Decimal(payment)
     updated_c_payment_cnt = data.c_payment_cnt + 1
 
     prepared = session.prepare(
