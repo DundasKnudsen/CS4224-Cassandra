@@ -21,7 +21,6 @@ def write_summary(file_dir, transactions_count, elapsed_time, throughput):
 
 
 def run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir):
-    session.execute("USE wholesaler")
     transactions_count = 0
     with open(xact_file_dir) as xact_file:
         lines = xact_file.readlines()
@@ -95,7 +94,7 @@ def main():
     cluster = Cluster(control_connection_timeout=None)
     profile = ExecutionProfile(consistency_level=consistency_level)
     cluster.add_execution_profile("client", profile)
-    session = cluster.connect()
+    session = cluster.connect("wholesaler")
     run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir)
 
 

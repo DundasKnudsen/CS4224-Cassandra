@@ -4,7 +4,7 @@ from decimal import *
 def update_warehouse(session, w_id, payment):
     prepared = session.prepare(
         "SELECT w_ytd, w_street_1, w_street_2, w_city, w_state, w_zip FROM warehouse WHERE w_id = ?")
-    rows = session.execute(prepared.bind((w_id)))
+    rows = session.execute(prepared.bind([w_id]))
 
     if not rows:
         return None
