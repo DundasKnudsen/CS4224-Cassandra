@@ -5,34 +5,10 @@
 # -   num_clients: number of clients to run
 # -   consistency_level: consistency level
 
-node_id=$1
-num_clients=$2
-consistency_level=$3
+mkdir log
 
-xact_dir=$(pwd)/data/xact-files
-log_dir=$(pwd)/log
+echo "loading...."
+bash load_data.sh $(pwd)/data/data-files
 
-mkdir -p log/$num_clients-$consistency_level
-
-echo "Spawn NC / 5 process ..."
- 
-for i in $(seq 1 $num_clients)
-do
-    if [ $((i%5)) == $node_id ]
-    then
-        log_file=$log_dir/$num_clients-$consistency_level-stats.txt
-        touch $log_file
-        python ./script/main.py $xact_dir/$i.txt $i $consistency_level $log_file &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
-    fi
-done
-
-echo "Join NC / 5 process"
-
-wait
-
-echo "Sumarize..."
-
-python ./script/summary.py $log_dir/$num_clients-$consistency_level-stats.txt > $log_dir/$num_clients-$consistency_level-summary.txt
-
-echo "done on node $node_id with num_clients $num_clients and consistency_level $consistency_level"
-
+echo "running xact..."
+bash main.sh $1 $2 $3 > $(pwd)/log/$1-$2-$3-log.txt
