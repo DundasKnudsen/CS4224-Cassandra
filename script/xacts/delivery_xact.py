@@ -3,9 +3,14 @@ from datetime import datetime
 
 def get_and_update_next_o_id_to_deliver(session, w_id, d_id):
     prepared = session.prepare(
-        "SELECT d_next_o_id_to_deliver FROM district WHERE d_w_id = ? AND d_id = ?")
+        "SELECT d_next_o_id_to_deliver, d_next_o_id FROM district WHERE d_w_id = ? AND d_id = ?")
     rows = session.execute(prepared.bind((w_id, d_id)))
+    if not rows:
+        return None
     next_o_id_to_deliver = int(rows[0].d_next_o_id_to_deliver)
+    next_o_id = int(rows[0].d_next_o_id)
+    if next_o_id <= next_o_id_to_deliver:
+        return None
 
     prepared = session.prepare(
         "UPDATE district SET d_next_o_id_to_deliver = ? WHERE d_w_id = ? AND d_id = ?")
@@ -47,6 +52,8 @@ def update_customer(session, w_id, d_id, o_id, total_amount):
     if not rows:
         return
     c_id = rows[0].o_c_id
+    if not c_id:
+        return
 
     # Update customer
     prepared = session.prepare(
@@ -67,8 +74,9 @@ def update_customer(session, w_id, d_id, o_id, total_amount):
 def delivery_xact(session, w_id, carrier_id):
     for d_id in range(1, 11):
         o_id = get_and_update_next_o_id_to_deliver(session, w_id, d_id)
-        update_order(session, w_id, d_id, o_id, carrier_id)
-        total_amount = update_order_lines_and_get_total_order_amount(
-            session, w_id, d_id, o_id)
-        update_customer(session, w_id, d_id, o_id, total_amount)
+        if o_id is not None:
+            update_order(session, w_id, d_id, o_id, carrier_id)
+            total_amount = update_order_lines_and_get_total_order_amount(
+                session, w_id, d_id, o_id)
+            update_customer(session, w_id, d_id, o_id, total_amount)
     return 'Finish delivery!'
