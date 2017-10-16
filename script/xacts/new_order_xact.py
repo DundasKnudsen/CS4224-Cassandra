@@ -127,7 +127,7 @@ def compact_order_lines(num_items, item_number, supplier_w, quantity):
     return order_lines
 
 
-def new_order_xact(session, w_id, d_id, c_id, num_items, item_number, supplier_w, quantity):
+def new_order_xact(session, c_id, w_id, d_id, num_items, item_number, supplier_w, quantity):
 
     order_lines = compact_order_lines(
         num_items, item_number, supplier_w, quantity)
