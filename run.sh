@@ -5,8 +5,6 @@
 # -   num_clients: number of clients to run
 # -   consistency_level: consistency level
 
-mkdir log
-
 echo "loading...."
 bash load_data.sh $(pwd)/data/data-files
 
