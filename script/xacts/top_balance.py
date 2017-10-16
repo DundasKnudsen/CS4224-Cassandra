@@ -10,13 +10,13 @@ def get_top_balance_customers(session, d_id, limit):
 
 def get_district_name(session, d_id):
     prepared = session.prepare("SELECT d_name FROM district WHERE d_id = ?")
-    rows = session.execute(prepared.bind((int(d_id))))
+    rows = session.execute(prepared.bind([int(d_id)]))
     return None if not rows else rows[0].d_name
 
 
 def get_warehouse_name(session, w_id):
     prepared = session.prepare("SELECT w_name FROM warehouse WHERE w_id = ?")
-    rows = session.execute(prepared.bind((int(w_id))))
+    rows = session.execute(prepared.bind([int(w_id)]))
     return None if not rows else rows[0].w_name
 
 

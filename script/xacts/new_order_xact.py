@@ -30,7 +30,7 @@ def get_w_tax(session, w_id):
     prepared = session.prepare(
         "SELECT w_tax FROM warehouse WHERE w_id = ?"
     )
-    rows = session.execute(prepared.bind((w_id)))
+    rows = session.execute(prepared.bind([w_id]))
     return rows[0].w_tax if rows else 0
 
 
