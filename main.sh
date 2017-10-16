@@ -30,9 +30,5 @@ echo "Join NC / 5 process"
 
 wait
 
-echo "Sumarize..."
-
-python ./script/summary.py $log_dir/$num_clients-$consistency_level-stats.txt > $log_dir/$num_clients-$consistency_level-summary.txt
-
-echo "done on node $node_id with num_clients $num_clients and consistency_level $consistency_level"
+echo "done xacts on node $node_id with num_clients $num_clients and consistency_level $consistency_level"
 

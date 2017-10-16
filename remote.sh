@@ -11,6 +11,7 @@ do
         ssh xcnd53 "cd /home/stuproj/cs4224k/CS4224-Cassandra && bash main.sh 4 $nc $cl > log/4-$nc-$cl-log.txt" &
         ssh xcnd54 "cd /home/stuproj/cs4224k/CS4224-Cassandra && bash main.sh 5 $nc $cl > log/5-$nc-$cl-log.txt" &
         wait
+        ssh xcnd50 "cd /home/stuproj/cs4224k/CS4224-Cassandra && bash summary.sh $nc $cl > log/$nc-$cl-summry-data.txt"
         echo "Done $nc $cl..."
     done
  
