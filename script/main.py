@@ -3,6 +3,7 @@ import time
 
 from cassandra import ConsistencyLevel
 from cassandra.cluster import Cluster
+from cassandra.cluster import ExecutionProfile
 
 from xacts.payment_xact import payment_xact
 from xacts.top_balance import top_balance
@@ -89,8 +90,9 @@ def main():
     elif consistency_level_string == "QUORUM":
         consistency_level = ConsistencyLevel.QUORUM
 
-    cluster = Cluster(control_connection_timeout=None,
-                      consistency_level=consistency_level)
+    cluster = Cluster(control_connection_timeout=None)
+    profile = ExecutionProfile(consistency_level=consistency_level)
+    cluster.add_execution_profile("client", profile)
     session = cluster.connect()
     run_xacts(session, xact_file_dir, xact_id, client_summary_file_dir)
 

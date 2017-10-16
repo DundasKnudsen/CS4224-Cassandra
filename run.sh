@@ -14,15 +14,23 @@ log_dir=$(pwd)/log
 
 mkdir -p log/$num_clients-$consistency_level
 
+echo "Spawn NC / 5 process ..."
+ 
 for i in $(seq 1 $num_clients)
 do
     if [ $((i%5)) == $node_id ]
     then
-        python ./script/main.py xact_dir/$i.txt $i $consistency_level $log_dir/$num_clients-$consistency_level-stats.txt &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
+        log_file=$log_dir/$num_clients-$consistency_level-stats.txt
+        touch log_file
+        python ./script/main.py xact_dir/$i.txt $i $consistency_level $log_file &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
     fi
 done
 
+echo "Join NC / 5 process"
+
 wait
+
+echo "Sumarize..."
 
 python ./script/summary.py $log_dir/$num_clients-$consistency_level-stats.txt > $log_dir/$num_clients-$consistency_level-summary.txt
 
