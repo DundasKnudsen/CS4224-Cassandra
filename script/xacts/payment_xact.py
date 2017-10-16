@@ -12,7 +12,7 @@ def update_warehouse(session, w_id, payment):
     data = rows[0]
     updated_w_ytd = data.w_ytd + Decimal(payment)
     prepared = session.prepare("UPDATE warehouse SET w_ytd = ? WHERE w_id = ?")
-    session.execute(prepared.bind((updated_w_ytd, int(w_id))))
+    session.execute(prepared.bind((updated_w_ytd, w_id)))
 
     return data
 
@@ -20,7 +20,7 @@ def update_warehouse(session, w_id, payment):
 def update_district(session, w_id, d_id, payment):
     prepared = session.prepare(
         "SELECT d_ytd, d_street_1, d_street_2, d_city, d_state, d_zip FROM district WHERE d_w_id = ? AND d_id = ?")
-    rows = list(session.execute(prepared.bind((int(w_id), int(d_id)))))
+    rows = session.execute(prepared.bind((w_id, d_id)))
 
     if not rows:
         return None
@@ -29,7 +29,7 @@ def update_district(session, w_id, d_id, payment):
     updated_d_ytd = data.d_ytd + Decimal(payment)
     prepared = session.prepare(
         "UPDATE district SET d_ytd = ? WHERE d_w_id = ? AND d_id = ?")
-    session.execute(prepared.bind((updated_d_ytd, int(w_id), int(d_id))))
+    session.execute(prepared.bind((updated_d_ytd, w_id, d_id)))
 
     return data
 
@@ -39,8 +39,7 @@ def update_customer(session, w_id, d_id, c_id, payment):
         """SELECT c_first, c_middle, c_last, c_street_1, c_street_2, c_city, c_state, c_zip,
                 c_phone, c_since, c_credit, c_credit_limit, c_discount, c_balance, c_ytd_payment,
                 c_payment_cnt FROM customer WHERE c_w_id = ? AND c_d_id = ? AND c_id = ?""")
-    rows = list(session.execute(
-        prepared.bind(int(w_id), int(d_id), int(c_id))))
+    rows = session.execute(prepared.bind(w_id, d_id, c_id))
 
     if not rows:
         return None
@@ -55,7 +54,7 @@ def update_customer(session, w_id, d_id, c_id, payment):
                 c_w_id = ? AND c_d_id = ? AND c_id = ?
         """)
     session.execute(prepared.bind((updated_c_balance, updated_c_ytd_payment,
-                                   updated_c_payment_cnt, int(w_id), int(d_id), int(c_id))))
+                                   updated_c_payment_cnt, w_id, d_id, c_id)))
 
     data.c_balance = updated_c_balance
     return data

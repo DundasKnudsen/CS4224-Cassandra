@@ -4,7 +4,7 @@ def get_orders(session, w_id, d_id, order_limit):
         WHERE o_w_id = ? AND o_d_id = ? \
         LIMIT ?"
     )
-    bound_stmt = prepared_stmt.bind([int(w_id), int(d_id), int(order_limit)])
+    bound_stmt = prepared_stmt.bind([w_id, d_id, int(order_limit)])
     return list(session.execute(bound_stmt))
 
 
@@ -17,18 +17,18 @@ def get_most_popular_items(session, w_id, d_id, o_id):
         WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ? AND ol_quantity = ?"
     )
     rows = session.execute(prepared.bind(
-        (int(w_id), int(d_id), int(o_id), item_highest_quantity)))
+        (w_id, d_id, int(o_id), item_highest_quantity)))
 
     return rows
 
 
-def get_item_highest_quantity(session, w_id, d_id, c_id):
+def get_item_highest_quantity(session, w_id, d_id, o_id):
     prepared = session.prepare(
         "SELECT ol_quantity \
         FROM order_line \
         WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ? LIMIT 1"
     )
-    rows = session.execute(prepared.bind((int(w_id), int(d_id), int(o_id))))
+    rows = session.execute(prepared.bind((w_id, d_id, int(o_id))))
     return rows[0].ol_quantity if rows else 0
 
 
@@ -38,7 +38,7 @@ def get_customer(session, w_id, d_id, c_id):
         FROM customer \
         WHERE c_w_id = ? AND c_d_id = ? AND c_id = ?"
     )
-    rows = session.execute(prepared.bind((int(w_id), int(d_id), int(c_id))))
+    rows = session.execute(prepared.bind((w_id, d_id, int(c_id))))
     return rows[0] if rows else None
 
 

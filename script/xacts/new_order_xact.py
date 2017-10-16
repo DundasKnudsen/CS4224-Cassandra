@@ -5,7 +5,7 @@ def get_and_update_district(session, w_id, d_id):
     prepared = session.prepare(
         "SELECT d_next_o_id, d_tax FROM district WHERE d_w_id = ? AND d_id = ?"
     )
-    rows = session.execute(prepared.bind((int(w_id), int(d_id))))
+    rows = session.execute(prepared.bind((w_id, d_id)))
     if not rows:
         return None
     district = rows[0]
@@ -13,7 +13,7 @@ def get_and_update_district(session, w_id, d_id):
         "UPDATE district SET d_next_o_id WHERE d_w_id = ? AND d_id = ?"
     )
     session.execute(prepared.bind(
-        (int(district.d_next_o_id + 1), int(w_id), int(d_id))))
+        (int(district.d_next_o_id + 1), w_id, d_id)))
     return district
 
 
@@ -23,23 +23,15 @@ def get_customer(session, w_id, d_id, c_id):
         FROM customer \
         WHERE c_w_id = ? AND c_d_id = ? AND c_id = ?"
     )
-    rows = session.execute(prepared.bind((int(w_id), int(d_id), int(c_id))))
+    rows = session.execute(prepared.bind((w_id, d_id, c_id)))
     return rows[0] if rows else None
-
-
-def update_next_o_id(session, warehouse_id, district_id, value):
-    prepared_stmt = session.prepare(
-        'UPDATE district SET d_next_o_id = ? WHERE d_w_id = ? AND d_id = ? IF d_next_o_id = ?')
-    bound_stmt = prepared_stmt.bind(
-        [int(value), int(warehouse_id), int(district_id), value - 1])
-    row = session.execute(bound_stmt)
 
 
 def get_w_tax(session, w_id):
     prepared = session.prepare(
         "SELECT w_tax FROM warehouse WHERE w_id = ?"
     )
-    rows = session.execute(prepared.bind((int(w_id))))
+    rows = session.execute(prepared.bind((w_id)))
     return rows[0].w_tax if rows else 0
 
 
@@ -58,7 +50,7 @@ def create_order(session, w_id, d_id, c_id, o_id, num_of_items, order_lines):
         "INSERT INTO order_table \
         (o_id, o_d_id, o_w_id, o_c_id, o_entry_d, o_ol_cnt, o_all_local) \
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-    session.execute(prepared.bind((int(o_id), int(d_id), int(w_id), int(
+    session.execute(prepared.bind((int(o_id), d_id, w_id, int(
         c_id), str(o_entry_d), int(num_of_items), all_local)))
 
     order = {
@@ -109,7 +101,7 @@ def update_order_line_and_stock(session, w_id, d_id, o_id, order_lines):
                 (ol_o_id, ol_d_id, ol_w_id, ol_number, ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_dist_info) \
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             )
-            session.execute(prepared.bind((int(o_id), int(d_id), int(w_id), item_index, int(
+            session.execute(prepared.bind((int(o_id), d_id, w_id, item_index, int(
                 i_id), int(supply_w_id), int(quantity), item_amount, "S_DIST_{0}".format(d_id))))
 
             added_items.append({
@@ -135,7 +127,7 @@ def compact_order_lines(num_items, item_number, supplier_w, quantity):
     return order_lines
 
 
-def new_order_transaction(session, w_id, d_id, c_id, num_items, item_number, supplier_w, quantity):
+def new_order_xact(session, w_id, d_id, c_id, num_items, item_number, supplier_w, quantity):
 
     order_lines = compact_order_lines(
         num_items, item_number, supplier_w, quantity)

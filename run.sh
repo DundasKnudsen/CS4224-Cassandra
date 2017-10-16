@@ -18,7 +18,7 @@ for i in $(seq 1 $num_clients)
 do
     if [ $((i%5)) == $node_id ]
     then
-        python ./script/main.py xact_dir/$i.txt $i $log_dir/$num_clients-$consistency_level-stats.txt &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
+        python ./script/main.py xact_dir/$i.txt $i $consistency_level $log_dir/$num_clients-$consistency_level-stats.txt &> $log_dir/$num_clients-$consistency_level/xact-$i.txt &
     fi
 done
 
