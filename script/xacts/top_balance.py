@@ -5,7 +5,7 @@ def get_top_balance_customers(session, d_id, limit):
         WHERE c_d_id = ? LIMIT ?"
     )
     rows = session.execute(prepared.bind((int(d_id), int(limit))))
-    return rows
+    return list(rows)
 
 
 def get_district_name(session, d_id):
