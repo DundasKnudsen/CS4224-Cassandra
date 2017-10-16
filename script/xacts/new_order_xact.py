@@ -36,7 +36,7 @@ def get_w_tax(session, w_id):
 
 def get_all_local_value(w_id, order_lines):
     for ol in order_lines:
-        if w_id != ol.ol_supply_w_id:
+        if w_id != ol['ol_supply_w_id']:
             return 0
     return 1
 
@@ -66,9 +66,9 @@ def update_order_line_and_stock(session, w_id, d_id, o_id, order_lines):
     item_index = 0
     for ol in order_lines:
         item_index += 1
-        i_id = ol.ol_i_id
-        supply_w_id = ol.ol_supply_w_id
-        quantity = ol.ol_quantity
+        i_id = ol['ol_i_id']
+        supply_w_id = ol['ol_supply_w_id']
+        quantity = ol['ol_quantity']
         prepared = session.prepare(
             "SELECT s_i_name, s_i_price, s_quantity, s_ytd, s_order_cnt, s_remote_cnt \
             FROM stock \
