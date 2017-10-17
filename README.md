@@ -23,6 +23,14 @@ $ /temp/apache-cassandra-3.11.0/bin/cassandra
 ```
 Remember to start the seed nodes before other nodes.
 
+### Install python driver
+You need to have `python 2` and `pip` to install cassandra python driver.
+Because you might not have sudo access, you can take a look at this [guide](https://gist.github.com/saurabhshri/46e4069164b87a708b39d947e4527298) to install pip without sudo
+Install cassandra python driver by running
+```sh
+$ pip install --user cassandra-driver
+``` 
+
 ### Running Experiment
 1. Load data
 ```sh
